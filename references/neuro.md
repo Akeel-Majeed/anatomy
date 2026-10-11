@@ -120,7 +120,7 @@ A `<button type="button" class="hp-quiz" aria-pressed="false">Quiz</button>` ins
 
 ## 5. Tissue tones
 
-Keep `craft.md` section 4's hierarchy: stand `lo`, structure `mid`, the cast `hi` with its regions as `mid` and `hi` bands so neighbours differ by one tone, grey matter the darker of the two and white matter the lighter. Borders between regions are `faint` hairlines. Exactly one part is `lit`: the hovered one, or none at rest. No colour unless colour is the subject (a stain, a tracer).
+Keep `craft.md` section 4's hierarchy: base and feet `lo`, the post, clamp and label plate `mid`, the cast `hi` with its regions as `mid` and `hi` bands so neighbours differ by one tone, grey matter the darker of the two and white matter the lighter. Borders between regions are `faint` hairlines. At most one part is `lit`: the hovered one, or the pulse's head chunk on the idle tour; none at rest. No colour unless colour is the subject (a stain, a tracer).
 
 ## 6. The scope of introductory neuroanatomy
 
