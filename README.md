@@ -8,13 +8,11 @@
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-1b1b19?style=flat-square" alt="MIT license"></a>
   <a href="#requirements"><img src="https://img.shields.io/badge/node-%E2%89%A5%2020.10-1b1b19?style=flat-square&logo=nodedotjs&logoColor=white" alt="Node 20.10 or later"></a>
   <a href="#requirements"><img src="https://img.shields.io/badge/dependencies-0-1b1b19?style=flat-square" alt="No dependencies"></a>
-  <a href="https://github.com/wheresryan22/anatomy/actions/workflows/ci.yml"><img src="https://github.com/wheresryan22/anatomy/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
+  <a href="https://github.com/Akeel-Majeed/anatomy/actions/workflows/ci.yml"><img src="https://github.com/Akeel-Majeed/anatomy/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
 </p>
 
 <p align="center">
-  <a href="https://skills.wheresryan.sh/anatomy"><img src="https://img.shields.io/badge/Website-skills.wheresryan.sh%2Fanatomy-1b1b19?style=for-the-badge" alt="Website: skills.wheresryan.sh/anatomy"></a>
-  &nbsp;
-  <a href="https://github.com/wheresryan22/anatomy/archive/refs/heads/main.zip"><img src="https://img.shields.io/badge/Download-ZIP-1b1b19?style=for-the-badge&logo=github&logoColor=white" alt="Download ZIP"></a>
+  <a href="https://github.com/Akeel-Majeed/anatomy/archive/refs/heads/main.zip"><img src="https://img.shields.io/badge/Download-ZIP-1b1b19?style=for-the-badge&logo=github&logoColor=white" alt="Download ZIP"></a>
   &nbsp;
   <a href="#install"><img src="https://img.shields.io/badge/Install-npx_skills_add-d7d7d0?style=for-the-badge&labelColor=1b1b19&logo=npm&logoColor=white" alt="Install with npx"></a>
 </p>
@@ -45,7 +43,7 @@ Then Claude checks its own work: the build fails if the key and the truth table 
 ## Quick start
 
 ```sh
-npx skills add wheresryan22/anatomy -g -a claude-code
+npx skills add Akeel-Majeed/anatomy -g -a claude-code
 ```
 
 Then, in Claude Code:
@@ -97,10 +95,10 @@ Anatomy is a standard [Agent Skill](https://code.claude.com/docs/en/skills): a f
 
 | | Command | Installs to |
 |---|---|---|
-| **skills CLI**, for you | `npx skills add wheresryan22/anatomy -g -a claude-code` | `~/.claude/skills/anatomy` |
-| **skills CLI**, for one project | `npx skills add wheresryan22/anatomy` | `.claude/skills/anatomy` |
-| **git**, for you | `git clone https://github.com/wheresryan22/anatomy.git ~/.claude/skills/anatomy` | `~/.claude/skills/anatomy` |
-| **git**, for one project | `git clone https://github.com/wheresryan22/anatomy.git .claude/skills/anatomy` | `.claude/skills/anatomy` |
+| **skills CLI**, for you | `npx skills add Akeel-Majeed/anatomy -g -a claude-code` | `~/.claude/skills/anatomy` |
+| **skills CLI**, for one project | `npx skills add Akeel-Majeed/anatomy` | `.claude/skills/anatomy` |
+| **git**, for you | `git clone https://github.com/Akeel-Majeed/anatomy.git ~/.claude/skills/anatomy` | `~/.claude/skills/anatomy` |
+| **git**, for one project | `git clone https://github.com/Akeel-Majeed/anatomy.git .claude/skills/anatomy` | `.claude/skills/anatomy` |
 | **Download**, no git | see below | `~/.claude/skills/anatomy` |
 
 <details>
@@ -128,12 +126,12 @@ Clone the repository into one of Claude Code's skill folders, so that `SKILL.md`
 
 <br>
 
-[Download the ZIP](https://github.com/wheresryan22/anatomy/archive/refs/heads/main.zip), unpack it, rename the folder from `anatomy-main` to `anatomy`, and move it into `~/.claude/skills/`.
+[Download the ZIP](https://github.com/Akeel-Majeed/anatomy/archive/refs/heads/main.zip), unpack it, rename the folder from `anatomy-main` to `anatomy`, and move it into `~/.claude/skills/`.
 
 Or in one line on macOS or Linux:
 
 ```sh
-mkdir -p ~/.claude/skills/anatomy && curl -L https://github.com/wheresryan22/anatomy/archive/refs/heads/main.tar.gz | tar -xz --strip-components=1 -C ~/.claude/skills/anatomy
+mkdir -p ~/.claude/skills/anatomy && curl -L https://github.com/Akeel-Majeed/anatomy/archive/refs/heads/main.tar.gz | tar -xz --strip-components=1 -C ~/.claude/skills/anatomy
 ```
 
 </details>
@@ -148,7 +146,7 @@ Type `/anatomy` and say what the figure should explain:
 /anatomy show me the hippocampus in coronal section with every structure labelled
 ```
 
-You don't have to name the skill. Claude also loads it when you ask for an isometric illustration, an explanatory figure for docs, a blog post or a landing page, or an interactive explainer.
+You don't have to name the skill. Claude also loads it when you ask to see, learn, revise or label the parts of a biological structure, or for an anatomy figure for lecture notes or a revision site.
 
 <details>
 <summary><b>More prompts</b>, from the skill's <a href="evals/evals.json">evals</a></summary>
@@ -201,9 +199,9 @@ Each framework-free example has a Node build script that writes standalone pages
 
 ## How it works
 
-- **[`SKILL.md`](SKILL.md)** is what Claude reads. It sets the workflow: collect the true numbers first, invent the object, write a parts list, plan the world, build the geometry once with the kit, paint back to front, frame it, make it live, and then verify it like a critic. It also holds the craft rules in short form.
+- **[`SKILL.md`](SKILL.md)** is what Claude reads. It sets the workflow: size the request, fetch a cited source and write the truth table, choose the cut, write a parts list, plan the world, build the geometry once with the kit, paint back to front, frame it, make it live, and then verify it like a critic. It also holds the craft rules in short form.
 - **[`kit/`](kit)** is the drawing library the figures are built from: the isometric camera, solids and a parts library (`iso-kit`), round parts on any axis (`lathe.mjs`), pipes and cables (`tube.mjs`), the WebGL layer (`gl.mjs`), the 3D runtime (`turn*.mjs`), and React components (`react/`). Apart from React for those components, it has no dependencies.
-- **[`references/`](references)** are the long-form guides Claude opens when it needs them: craft, the kit API, motion, React, verification, WebGL, a design walkthrough and the 3D mode.
+- **[`references/`](references)** are the long-form guides Claude opens when it needs them: the biology side (sources, the truth table, vocabulary, the anatomy check), craft, the kit API, motion, React, verification, WebGL, a design walkthrough and the 3D mode.
 - **Verification.** [`kit/audit.mjs`](kit/audit.mjs) proves the geometry: nothing passes through anything, every end sits on a mount, and every overlap is drawn in depth order (`node build.mjs --audit`). In headless Chrome, [`scripts/capture.mjs`](scripts/capture.mjs) and [`scripts/drive.mjs`](scripts/drive.mjs) take screenshots, close-ups and slowed-down contact sheets, [`scripts/lines.mjs`](scripts/lines.mjs) fails any line that ends in mid-air, and [`scripts/turn-check.mjs`](scripts/turn-check.mjs) checks 3D figures. The skill tells Claude to read every PNG it makes.
 
 <details>
@@ -270,8 +268,8 @@ anatomy/
 
 Issues and pull requests are welcome. Read [CONTRIBUTING.md](CONTRIBUTING.md) first: it covers building the examples, the checks, and the house rules a change has to keep (among them, no comments in code, and kit changes that leave every existing example byte-identical). Please follow the [Code of Conduct](CODE_OF_CONDUCT.md), and report security problems as described in [SECURITY.md](SECURITY.md).
 
-- [Report a bug](https://github.com/wheresryan22/anatomy/issues/new?template=bug_report.yml)
-- [Request a figure](https://github.com/wheresryan22/anatomy/issues/new?template=figure_request.yml)
+- [Report a bug](https://github.com/Akeel-Majeed/anatomy/issues/new?template=bug_report.yml)
+- [Request a figure](https://github.com/Akeel-Majeed/anatomy/issues/new?template=figure_request.yml)
 - [Changelog](CHANGELOG.md)
 
 ## Credit
