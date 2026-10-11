@@ -30,7 +30,7 @@ Fetch with Claude Code's WebFetch, which needs no API key. The build script neve
 
 **Wikipedia** is the default. For a structure:
 
-1. Fetch `https://en.wikipedia.org/wiki/<Structure>`. Read the infobox first: its *Latin*, *TA98/TA2* and *NeuroNames* rows give the canonical name; use the English name the infobox heads the article with, and keep the Latin as a synonym.
+1. Fetch `https://en.wikipedia.org/wiki/<Structure>`. Read the infobox first: its *Latin*, *TA98/TA2* and *NeuroNames* rows give the nomenclature; use the English name that heads the article as `name`, and keep the Latin term as a synonym.
 2. Read the *Structure* or *Anatomy* section for what the structure contains, what it borders, and the section the article's figure uses.
 3. For every sub-part the article names without giving its borders, fetch that sub-part's own article and repeat.
 4. For pathways, read the *Connections*, *Circuitry* or *Function* section, and the pathway's own article (for example `Perforant_path`, `Schaffer_collateral`).
@@ -47,7 +47,7 @@ Fetch with Claude Code's WebFetch, which needs no API key. The build script neve
 
 ## 3. The truth table
 
-`truth.mjs` is data only, beside the build script. This is a fragment, two rows of a real table; the ids its `borders` name are rows that follow:
+`truth.mjs` is data only, beside the build script. This is a fragment of the hippocampus table, trimmed to two rows; the ids its `borders` and `PATHS` name are rows it leaves out:
 
 ```js
 export const SOURCE = {
@@ -69,12 +69,12 @@ export const PATHS = [
 
 - `n` is the pin number and the key order, 1-based, unique.
 - `id` is what the geometry refers to: lower-case, hyphens, unique.
-- `borders` lists the ids this part shares an edge with on the cut face. Symmetric: if `a` lists `b`, `b` lists `a`.
+- `borders` lists the ids this part shares an edge with on the cut face, or touches where the figure has no cut face. Symmetric: if `a` lists `b`, `b` lists `a`.
 - `layerOf` names the region a layer is a band on. A layer has its own pin and key row, lifts with its parent, and is not its own solid.
 - `PATHS` are in circuit order; the pulse runs them in array order. `from` and `to` are `PARTS` ids.
-- Every row has its own `source` URL, even when it is the same as the one above.
+- Every row has its own `source` URL, even when it is the same as the one above. A border counts as sourced when either of its two rows' pages states it; a synonym must appear in its own row's page.
 
-The key is generated from `PARTS` and each part's solid and pin are built from its row by `id`, so a name is typed in exactly one place. `examples/hippocampus/check.mjs` holds `checkTruth(PARTS, PATHS, drawn)`, where `drawn` is `{ regions, pins }`, two `Set`s of ids: copy it beside any new build. It throws, naming the row, on a duplicate `n` or `id`, a `borders`, `layerOf`, `from` or `to` that is not an id, an asymmetric border, and, when `drawn` is given, a row with no drawn region or no pin and a pin with no row.
+The key is generated from `PARTS` and each part's solid and pin are built from its row by `id`, so a part's name is typed in exactly one place. `examples/hippocampus/check.mjs` holds `checkTruth(PARTS, PATHS, drawn)`; copy the file beside any new build. `drawn` is `{ regions, pins }`, two `Set`s of ids, and `regions` holds every row's id, a layer's band included. It throws, naming the row, on a duplicate `n` or `id`, a `borders`, `layerOf`, `from` or `to` that is not an id, an asymmetric border, and, when `drawn` is given, a row with no drawn region or no pin and a pin with no row.
 
 ## 4. Parts vocabulary, with recipes
 
@@ -86,13 +86,13 @@ Reuse `craft.md` section 3 as it is: the base plate on feet with corner screws a
 
 ### The cast: regions as prisms along the long axis
 
-A region of a section is a polygon in the cut face's plane, extruded along the cast's long axis. Copy `prismPaths` from `examples/arcade-cabinet/build.mjs` together with its local helpers `signed`, `screenOriented` and `runsOf` (it draws a concave polygon as facets with its true silhouette as the outline, where `G.prismOf` would hull it), and record it with `A.prism(F, polygon, s0, s1, { name })` where `F` is `G.frameOf(origin, axis, u, v)` with `axis` along the length and `u`, `v` spanning the cut face. One prism per region row; neighbouring regions share edges exactly (the same vertex list on the shared edge), which the audit accepts as flush contact. Give the back end of the cast a second cut or let it stop at the cradle; it is a block cut from the structure, as a histology block is.
+A region of a section is a polygon in the cut face's plane, extruded along the cast's long axis. Copy `prismPaths` from `examples/arcade-cabinet/build.mjs` together with its local helpers `signed`, `screenOriented` and `runsOf` and the two lines it closes over, `const V = G.viewOf(P)` and `const at = (p) => k.iso(p, P)` (it draws a concave polygon as facets with its true silhouette as the outline, where `G.prismOf` would hull it), and record it with `A.prism(F, polygon, s0, s1, { name })` where `F` is `G.frameOf(origin, axis, u, v)` with `axis` along the length and `u`, `v` spanning the cut face. One prism per region row; neighbouring regions share edges exactly (the same vertex list on the shared edge), which the audit accepts as flush contact. Give the back end of the cast a second cut or let it stop at the cradle; it is a block cut from the structure, as a histology block is.
 
 Keep the section polygons in a `section.mjs` beside the build, keyed by `PARTS` id, in face coordinates `[u, v]` (u across the face, v up), with the layers and cords in the same coordinates. That file is the anatomical drawing; the build only places it.
 
 ### The cut face: layers as bands
 
-A `layerOf` row is a closed polygon inside its parent's polygon, drawn as a flat fill in the face plane, not extruded: map each `[u, v]` to world with the frame, project with `k.iso`, and draw with `k.pathOf(points, true)` as a `<path>` carrying `data-tone`. Its border is two hairlines in the `faint` tone, the band's long edges drawn as open polylines with `lineSvg` that end on the parent's outline, so the line check sees them; a closed hairline has no ends, and the check cannot catch a band that stops short. It lifts with its parent, so put it inside the parent's `<g data-part>`. Bands run edge to edge of their parent. The cut face must be parallel to the x or y wall: `sideMatrix` lays text only on those two faces, and an oblique face has no kit text matrix.
+A `layerOf` row is a closed polygon inside its parent's polygon, drawn as a flat fill in the face plane, not extruded: map each `[u, v]` to world with the frame, project with `k.iso`, and draw with `k.pathOf(points, true)` as a `<path class="hp-band" data-tone="mid">` that page CSS fills by tone. Its border is two hairlines in the `faint` tone, the band's long edges drawn as open polylines with `lineSvg` that end on the parent's outline, so the line check sees them; a closed hairline has no ends, and the check cannot catch a band that stops short. It lifts with its parent, so put it inside the parent's `<g data-part>`. Bands run edge to edge of their parent. The cut face must be parallel to the x or y wall: `sideMatrix` lays text only on those two faces, and an oblique face has no kit text matrix.
 
 ### A nucleus inside a cutaway
 
@@ -100,7 +100,7 @@ Draw the neighbour as a prism with a notch (a concave polygon) and the nucleus a
 
 ### A tract or pathway: cords in a groove
 
-A cord is a route from one named part to another: `R.route(id, points, r, { piece, limp: true })` with `T.tubePieces` chunks drawn by `T.tubeSvg`, as the arcade cabinet's `cable` helper does. On a cut face, the body runs `r + 0.2` proud of the face along its normal with `r ≤ 0.4`, or with `touch` naming the part it lies on, so `clearances` allows it; the last leg at each end turns into the face so the tip lies on the part, which is what `terminals` and `looseEnds` measure. Draw a groove under it as two faint lines on the face, `r` either side of the centreline, ending on the parts' borders. A synapse dot (`k.dotsSvg`, size 0.5) is drawn at each tip on the part the path names. Each chunk's group carries `data-route="<id>" data-chunk="<n>"` so the pulse can light it.
+A cord is a route from one named part to another: `R.route(id, points, r, { piece, limp: true })` with `T.tubePieces` chunks drawn by `T.tubeSvg`, as the arcade cabinet's `cable` helper does. On a cut face, the body runs `r + 0.2` proud of the face along its normal with `r ≤ 0.4`, or with `touch: ["<shape name>", …]` listing every part whose face it lies over (both neighbours when it runs along a border), so `clearances` allows it; the last leg at each end turns into the face so the tip lies on the part, which is what `terminals` and `looseEnds` measure. Draw a groove under it as two faint lines on the face, `r` either side of the centreline, ending on the parts' borders. A synapse dot (`k.dotsSvg`, size 0.5) is drawn at each tip on the part the path names. Each chunk's group carries `data-route="<id>" data-chunk="<n>"` so the pulse can light it.
 
 ### A neuron
 
@@ -108,11 +108,11 @@ Soma: `G.sphereOf` or a short lathe. Dendrites: routes that leave the soma radia
 
 ### A pin
 
-Each `PARTS` row gets one pin. On a vertical cut face: a short disc along the face's normal, recorded as `A.disc(Fn, 0, 1.2, 1.6, { name: "pin.<id>" })` and drawn as `solidSvg(G.disc(0, 1.2, 1.6, Fn, P), { tone: "hi" })`, where `Fn` is a frame whose axis is the face normal at the pin's point (the arcade cabinet's leveller is the pattern), with the number as `faceTextSvg` on `sideMatrix` at the disc's face, size 2.2, `anchor: "middle"`. On a top face: a stem `k.cylinder(cx, cy, 0.35, z, 4, P, 12)` and a head `k.cylinder(cx, cy, 1.4, z + 4, 0.8, P, 16)`, the number on `topMatrix` at the head's top. The pin's `<g>` carries `data-pin="<id>"`, inside the part's `<g data-part="<id>">` so it lifts with the part. A pin stands on its part: the audit's `supports` sees the disc or the stem touching the part.
+Each `PARTS` row gets one pin. On a vertical cut face: a short disc along the face's normal, recorded as `A.disc(Fn, 0, 1.2, 1.6, { name: "pin.<id>" })` and drawn as `solidSvg(G.disc(0, 1.2, 1.6, Fn, P), { tone: "hi" })`, where `Fn` is a frame whose axis is the face normal at the pin's point (the arcade cabinet's leveler is the pattern), with the number as `faceTextSvg` on `sideMatrix` at the disc's face, size 2.2, `anchor: "middle"`. On a top face: a stem `k.cylinder(cx, cy, 0.35, z, 4, P, 12)` and a head `k.cylinder(cx, cy, 1.4, z + 4, 0.8, P, 16)`, the number on `topMatrix` at the head's top. The pin's `<g>` carries `data-pin="<id>"`, inside the part's `<g data-part="<id>">` so it lifts with the part. A pin stands on its part: the audit's `supports` sees the disc or the stem touching the part.
 
 ### Pathway pulse
 
-The pulse lights one chunk of one cord at a time, in `PATHS` order, chunk order within a path: the live script keeps `routes = PATHS.map(p => [...stage.querySelectorAll(`[data-route="${p.id}"]`)].sort((a, b) => a.dataset.chunk - b.dataset.chunk))` (the settled order is depth order, not chunk order), advances a position at 24 chunks per second, sets `data-hot` on the chunk's group at the head and removes it from the previous one, with page CSS as the arcade cabinet's (`[data-hot] .tb-body { fill: var(--anatomy-lit) } [data-hot] .iso-edge { stroke: var(--anatomy-lit) }`; the kit's own CSS styles `data-tone` only on lines), and writes `${path.name}` in the readout while the pulse is on that path. Nothing is re-rendered: only attributes change. The idle tour runs it after 1.4 s of no interaction; hovering a cord runs that cord's pulse once.
+The pulse lights one chunk of one cord at a time, in `PATHS` order, chunk order within a path: the live script keeps `routes = PATHS.map(p => [...stage.querySelectorAll(`[data-route="${p.id}"]`)].sort((a, b) => a.dataset.chunk - b.dataset.chunk))` (the settled order is depth order, not chunk order), advances a position at 24 chunks per second, sets `data-hot` on the chunk's group at the head and removes it from the previous one, Page CSS lights the group, as the arcade cabinet's does: `[data-hot] .tb-body, [data-hot] .tb-shine, [data-hot] .tb-shade { fill: var(--anatomy-lit) } [data-hot] .iso-edge { stroke: var(--anatomy-lit) }` (the kit's own CSS never colours a tube group by `data-tone`). The readout shows `${path.name}` while the pulse is on that path. Nothing is re-rendered: only attributes change. The idle tour runs it after 1.4 s of no interaction; hovering a cord runs that cord's pulse once.
 
 ### Quiz toggle
 
@@ -141,7 +141,7 @@ A checklist of what first courses examine, for picking the parts a request impli
 Run it before the geometry checks, in this order:
 
 1. **The build assertion.** `checkTruth(PARTS, PATHS, { regions, pins })` runs on every build and fails naming the part. Nothing else is checked until it passes.
-2. **Adjacency at 4×.** `node scripts/capture.mjs page.html --out shots/face.png --zoom x,y,w,h` with the cut face's region in CSS pixels (4× is the default `--zoom-scale`; `verify.md` has the flags), then read the PNG beside the source's figure. Every `borders` entry is a visible shared edge; no two parts touch that the table says don't.
+2. **Adjacency at 4×.** `node scripts/capture.mjs page.html --out shots/face.png --zoom x,y,w,h` with the cut face's region in CSS pixels (4× is the default `--zoom-scale`; `verify.md` has the flags), then read the PNG beside the source's figure. Every `borders` entry is a visible shared edge; no two parts touch that the table says don't. With no cut face, read each `borders` entry as a visible contact at 4×.
 3. **Names verbatim.** Diff the key's text against the source's names or the user's list: case, spelling, hyphens.
 4. **Second reading.** Open the source again and read it row by row against the finished key. Fix the table, rebuild, repeat.
 
