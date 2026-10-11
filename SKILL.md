@@ -22,30 +22,30 @@ The hippocampus is the quality bar for a biological figure: its cut face, pins a
 
 ## The one idea that matters
 
-**The object is the explanation.** Don't draw boxes, arrows and labels. Invent a real, well-made physical thing whose working *is* the concept. Here is how earlier figures mapped:
+**The model is the explanation.** Don't draw boxes, arrows and labels, and don't invent a stand-in object. Draw the real structure as a well-made teaching model, true to a cited source, with every named part its own solid and its own pin. Here is how a structure maps to a model:
 
-| Concept | Object |
+| Structure | Model |
 |---|---|
-| One shared GPU context serving many canvases | A gantry plotter: one print head visiting 16 wells |
-| A cache key that skips work when nothing changed | A pin-tumbler lock: when every pin matches, the plug turns and nothing is redrawn |
-| Seven render targets with different bytes per texel | A chest of seven drawers, each as deep as its bytes |
-| A separable blur (49 × 49 taps vs 49 + 49) | A bed-of-nails stamp beside two combs on rails |
-| A spring that presses and leans | A test rig with springs, a probe and a dial gauge |
-| A height profile | A profile (contour) gauge pressed against the edge |
-| Light that depends on facing | A small photo studio: key and fill lamps around a turntable |
+| A region (the hippocampal formation, the thalamus) | A cast on a stand with one face cut to the textbook's section, each sub-region its own solid |
+| A nucleus (the nuclei of the amygdala, the substantia nigra) | A body inside a cutaway of its neighbour, with the cut edge drawn |
+| A tract or pathway (the corticospinal tract, the perforant path) | A bundle of cords from one named part to another, each end on a synapse dot |
+| A neuron or a cell | Soma, dendrites, axon hillock, an axon with myelin collars and nodes, terminals; glia as their own bodies |
+| A circuit (the trisynaptic circuit, the basal ganglia loops) | Pathways on a model, with a pulse that runs them in order |
+| A layered structure (the cortex, the retina, the cerebellar cortex) | A block whose layers are bands on the cut face, each band a named part |
 
-Two ways this fails, both seen in practice:
+Three ways this fails:
 
-- **Too abstract.** Stacked plates, floating slabs or labelled boxes don't read as anything.
-- **Too flat and bland.** One big slab with a few lines on it has no volume, no parts and nothing to discover.
+- **Too abstract.** Coloured blobs, floating slabs or labelled boxes don't read as anything.
+- **Too mechanical.** Bevels, screws and knurls on tissue, so the structure looks like a machine part. The stand is machined; the cast is not.
+- **Wrong.** A name, a border or a connection the source does not support. This is the only failure that costs the reader an exam mark, and the truth table and the anatomy check exist to catch it.
 
-The fix for both is the same: a recognisable machine, built from many small, precise, purposeful parts.
+The fix for the first two is a recognisable, well-made model built from many small, precise, purposeful parts. The fix for the third is never drawing a part the truth table doesn't have, and never typing a name anywhere but the truth table.
 
-**Every creation is highly detailed.** This holds for every figure, however small the idea or the request: a quick explainer is still a dense, real machine, never a few slabs. What scales with the size (workflow step 1) is how far you push it: a Figure gets the 4× sweep over its subject and mechanism, a Hero or an Epic over the whole drawing.
-- **Read the real thing.** Build it the way the real object is built: every screw, seam, bevel, bushing, label plate, cable with its connector, scale with its ticks, and the parts that hold the parts.
-- **Two looks.** At 1× it reads as one clear machine. At 4× every region still has something true to find; a bare face or an empty corner is unfinished work, not calm.
-- **Purposeful, never noise.** Detail comes from parts that belong to the mechanism. Each one sits on another part, ends on an edge, and fades rather than stops.
-- **Check it last.** Before you finish, zoom to 4× (over the subject and mechanism for a Figure, the whole drawing for a Hero or an Epic) and add the real parts that are missing wherever a region is plain.
+**Every creation is highly detailed.** This holds for every figure, however small the structure or the request: a quick figure of one nucleus is still a dense, real model on a real stand, never a blob on a slab. What scales with the size (workflow step 1) is how far you push it: a Figure gets the 4× sweep over the cast and its pins, a Hero or an Epic over the whole drawing.
+- **Read the real thing.** Build it the way the structure is built: every layer, every border, every fibre bundle with its ends, the sulcus that separates two parts, and the stand, clamp, label plate and pins that hold and name them.
+- **Two looks.** At 1× it reads as one clear model. At 4× every region still has something true to find: a layer's band, a cord in its groove, a pin's number. A bare face or an empty corner is unfinished work, not calm.
+- **Purposeful, never noise.** Detail comes from parts the source names or the stand needs. Each one sits on another part, ends on an edge, and fades rather than stops.
+- **Check it last.** Before you finish, zoom to 4× (over the cast and pins for a Figure, the whole drawing for a Hero or an Epic) and add the real parts that are missing wherever a region is plain.
 
 ## Workflow
 
