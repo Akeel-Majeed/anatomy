@@ -30,6 +30,12 @@ jobs:
           node examples/dial-indicator/build.mjs
           node examples/dial-indicator/build.mjs --light
 
+      - name: Hippocampus
+        run: |
+          node examples/hippocampus/build.mjs
+          node examples/hippocampus/build.mjs --light
+          node examples/hippocampus/check.mjs
+
       - name: Desk computer
         run: |
           node examples/desk-computer/build.mjs

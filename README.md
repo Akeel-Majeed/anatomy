@@ -1,6 +1,6 @@
 <h1 align="center">Anatomy</h1>
 
-<p align="center"><b>A Claude skill that explains an idea by building it as a real, working object.</b><br>Crafted, interactive isometric figures with many small precise parts, in SVG, WebGL and 3D.</p>
+<p align="center"><b>A Claude skill that teaches a biological structure by building it as a labelled teaching model.</b><br>Crafted, interactive isometric figures with numbered pins, a key, and every name checked against a cited source. In SVG, with WebGL and 3D from the same kit.</p>
 
 <p align="center">
   <a href="https://code.claude.com/docs/en/skills"><img src="https://img.shields.io/badge/Claude_Code-skill-1b1b19?style=flat-square&logo=claude&logoColor=white" alt="Claude Code skill"></a>
@@ -34,13 +34,13 @@
   <img src=".github/assets/raptor-engine-firing.webp" width="640" alt="An isometric drawing of a Raptor 2 rocket engine hanging in a test stand, firing: a red exhaust plume, drawn by a WebGL shader, pours onto the stand's base plate. The card reads Fig 1, Raptor 2 test stand, Pc 300 bar, 230 tf.">
 </p>
 
-<p align="center"><sub><code>examples/raptor-engine</code>, light theme, firing. The engine and stand are SVG; the plume is a WebGL shader in the same isometric camera.</sub></p>
+<p align="center"><sub><code>examples/raptor-engine</code>, light theme, one of the machine examples that are the kit's technique references. The hippocampus example's screenshot replaces this once it is captured.</sub></p>
 
 ---
 
-Ask Claude for a figure that explains a technical idea, and Anatomy has it invent a physical thing whose working *is* the concept. A cache key that skips work when nothing changed becomes a pin-tumbler lock that only turns when every pin matches. One GPU context serving many canvases becomes a gantry plotter whose single print head visits 16 wells.
+Ask Claude to show you a structure, and Anatomy fetches a cited source, writes a truth table of every named part, its borders and its connections, and builds the structure as a teaching model on a stand: a cast with one face cut to the textbook's section, every named part its own solid with a numbered pin, a key under the card, and the pathways as cords that pulse in circuit order. Hover a pin and the part lifts and names itself. Press Q and the names hide, so you can test yourself.
 
-Then Claude builds that thing out of dozens of small, solid, shaded parts, puts it in a framed card with a title, a hint and a live readout, makes it move calmly under the pointer and the keyboard, and checks its own work by zooming in on every joint. Every number the figure shows comes from the same small model that moves its parts.
+Then Claude checks its own work: the build fails if the key and the truth table disagree, the cut face is read at 4× beside the source's figure, every name is matched to the source verbatim, and the geometry audit proves nothing passes through anything.
 
 ## Quick start
 
@@ -51,7 +51,7 @@ npx skills add wheresryan22/anatomy -g -a claude-code
 Then, in Claude Code:
 
 ```text
-/anatomy explain how a token bucket rate limiter works, interactive
+/anatomy show me the hippocampus in coronal section with every structure labelled
 ```
 
 That's it. No API keys and nothing to `npm install`: the kit uses only Node's built-in modules.
@@ -145,7 +145,7 @@ Claude Code picks up new skills in a running session. If the `skills` folder its
 Type `/anatomy` and say what the figure should explain:
 
 ```text
-/anatomy explain how a token bucket rate limiter works, interactive
+/anatomy show me the hippocampus in coronal section with every structure labelled
 ```
 
 You don't have to name the skill. Claude also loads it when you ask for an isometric illustration, an explanatory figure for docs, a blog post or a landing page, or an interactive explainer.
@@ -156,28 +156,28 @@ You don't have to name the skill. Claude also loads it when you ask for an isome
 <br>
 
 ```text
-/anatomy a figure for our Next.js docs on database connection pooling: a pool of 10 connections, requests borrow one and give it back, and when all 10 are busy new requests wait in a queue. A React component plus a static HTML preview, dark theme.
+/anatomy a pyramidal neuron with the three glial cell types around it, every part labelled so I can test myself. Dark theme, one HTML file.
 ```
 
 ```text
-/anatomy an isometric SVG explaining how a CDN edge cache works, cache hit vs miss, TTL of 60 s, for a dark landing page. Just the SVG file and a PNG preview.
+/anatomy the basal ganglia direct and indirect pathways on a coronal model, with the signal running each pathway. A React component plus an HTML preview, dark.
 ```
 
 ```text
-/anatomy a Bunsen burner on a lab bench: opening the air collar turns the lazy yellow flame into a roaring blue cone. WebGL for the flame, one HTML file, dark theme.
+/anatomy spinal cord cross-section with the stretch reflex arc. Use exactly these labels from my lecture: dorsal horn, ventral horn, dorsal root, dorsal root ganglion, ventral root, muscle spindle, Ia afferent, alpha motor neuron. Light, one file.
 ```
 
 ```text
-/anatomy a heat-exchanger espresso machine with the side panel off: boiler, heat-exchanger tube, group head, pump, steam wand and gauge. Show the water flowing when you pull a shot. Standalone HTML, light theme.
+/anatomy the cerebellar cortex in sagittal section: molecular, Purkinje and granular layers, with a Purkinje cell drawn across them. Just the SVG file and a PNG preview.
 ```
 
 </details>
 
 Three habits get the best figures:
 
-1. **Name the idea, not the drawing.** Say what it should explain and give the real numbers (sizes, counts, rates, thresholds). Anatomy invents the object; that is most of the work, and it does it better than a description of boxes and arrows.
-2. **Or name the object.** If you already know the machine you want (an espresso machine, a Bunsen burner, a lock), say so, and say what should move.
-3. **Say where it will live.** A standalone HTML page, a lone SVG file, or a React/Next.js component; light or dark. The build differs for each.
+1. **Name the structure and the cut.** Say which structure and which section (coronal, sagittal, transverse). Anatomy fetches the source and writes the truth table; that is most of the work.
+2. **Paste your label list.** If your course names things a certain way, paste the labels from your lecture or textbook figure. They are used verbatim, in your order, and the caption says so.
+3. **Say where it will live.** A standalone HTML page, a lone SVG file, or a React/Next.js component; light or dark.
 
 A figure arrives as source you own: a Node build script and the page it writes, or, for React, geometry modules, a server component for the static art and one client component for the motion. The kit comes with it.
 
@@ -187,6 +187,7 @@ Each framework-free example has a Node build script that writes standalone pages
 
 | Example | What it shows | Build |
 |---|---|---|
+| [`hippocampus`](examples/hippocampus) | The hippocampal formation in coronal section as a teaching model: regions as prisms, layers as bands on the cut face, a pin on every part, a key generated from `truth.mjs`, the trisynaptic circuit's cords pulsing in order, hover lift and quiz mode. The reference for every biological figure. | `node examples/hippocampus/build.mjs` |
 | [`dial-indicator`](examples/dial-indicator) | A dial gauge on a stand over a carriage of gauge blocks. The smallest example, about 300 lines. | `node examples/dial-indicator/build.mjs` |
 | [`desk-computer`](examples/desk-computer) | A 1984-style desk computer with a keyboard you can type on. The typed line appears on a CRT drawn in the plane of the case front, and switching it off collapses the picture to a line and a dot. About 85 solids. | `node examples/desk-computer/build.mjs` |
 | [`arcade-cabinet`](examples/arcade-cabinet) | An upright arcade cabinet with its side panel off. Drop a quarter: it rolls down the coin chute past the coin-switch wire into the cash box, a pulse runs along the cable to the board, and the CRT warms up into an attract mode drawn in the plane of the tilted monitor. About 240 solids and 15 cables. | `node examples/arcade-cabinet/build.mjs` |
@@ -196,7 +197,7 @@ Each framework-free example has a Node build script that writes standalone pages
 | [`spot-plate`](examples/spot-plate) | A second figure from the same site: six pairs of glass drops on a spot plate that run together into one piece of glass as a fan of feeler blades opens. Each pair is drawn from one distance field. No build script: copy it into a React app. | none |
 | [`turning-dial`](examples/turning-dial) | The 3D mode: a combination dial that turns in true 3D with a small robot hand on it, a three-hinge finger that lifts, and a pod that breaks off as a free body. `stress.mjs` is a 380-part hand in a cluttered workshop, used to measure performance. | `node examples/turning-dial/build.mjs` |
 
-`node examples/raptor-engine/build.mjs --audit`, `node examples/arcade-cabinet/build.mjs --audit` and `node examples/turning-dial/build.mjs --light --audit` also run the geometry audit. The 3D audit is slow; see [`references/3d.md`](references/3d.md).
+`node examples/hippocampus/build.mjs --audit`, `node examples/raptor-engine/build.mjs --audit`, `node examples/arcade-cabinet/build.mjs --audit` and `node examples/turning-dial/build.mjs --light --audit` also run the geometry audit. The 3D audit is slow; see [`references/3d.md`](references/3d.md).
 
 ## How it works
 
@@ -228,6 +229,7 @@ anatomy/
 │   └── turn-fixed.mjs, canvas-painter.mjs, gl-shared.mjs
 │                             experimental variants, not yet documented or used by the examples
 ├── references/               long-form guides Claude reads as needed
+│   ├── neuro.md              the biology side: sources, the truth table, vocabulary, the anatomy check
 │   ├── craft.md  kit.md  motion.md  react.md
 │   └── verify.md  webgl.md  walkthrough.md  3d.md
 ├── scripts/                  headless Chrome checks and build helpers
@@ -237,7 +239,8 @@ anatomy/
 │   ├── inline-kit.mjs        the kit as source, to inline into a standalone page
 │   ├── turn-check.mjs        3D checks in the browser (with turn-fidelity.mjs)
 │   └── turn-bench.mjs        3D timing in Node
-├── examples/                 eight complete figures, built pages committed
+├── examples/                 nine complete figures, built pages committed
+│   └── hippocampus/          the biological reference: truth.mjs, check.mjs, section.mjs, build.mjs
 ├── evals/evals.json          test prompts and what a good answer contains
 └── .github/                  issue forms, PR template, CI, README images
 ```
@@ -255,9 +258,9 @@ anatomy/
 
 ## Limits
 
-- **It is not a chart library.** There are no axes, series or data plots. Numbers appear as a live readout driven by a model, and as the true sizes and counts of the parts.
-- **It draws machines, instruments, tools and furniture.** Not people or exact maps. An idea that has no mechanism to build will come out weaker.
-- **It is slow on purpose.** A figure takes a long session: the parts list, the geometry, the audit, and close-ups of every joint in both themes. The Raptor's build takes a few minutes, and a full 3D orbit audit takes 15 to 20 minutes for 30 parts.
+- **It draws teaching models, not histology.** A cast with a cut face, pins and a key. Not a stained section, not a photograph, not a chart.
+- **Accuracy is as good as the cited source.** Every name and border comes from the fetched source or your pasted list, and the build checks the key against it, but the source can differ from your course. Check the key against your own notes before an exam.
+- **It is slow on purpose.** A figure takes a long session: the fetch, the truth table, the parts list, the geometry, the audit, and close-ups of every pin and border in both themes.
 - **Shaders need WebGL.** Without it the SVG still reads, and under reduced motion every figure goes still.
 
 > [!NOTE]
@@ -270,6 +273,10 @@ Issues and pull requests are welcome. Read [CONTRIBUTING.md](CONTRIBUTING.md) fi
 - [Report a bug](https://github.com/wheresryan22/anatomy/issues/new?template=bug_report.yml)
 - [Request a figure](https://github.com/wheresryan22/anatomy/issues/new?template=figure_request.yml)
 - [Changelog](CHANGELOG.md)
+
+## Credit
+
+This is a fork of [wheresryan22/anatomy](https://github.com/wheresryan22/anatomy), which draws technical ideas as invented machines. The kit, the craft rules, the audit and the machine examples are its work. This fork turns the skill toward biological anatomy.
 
 ## License
 
