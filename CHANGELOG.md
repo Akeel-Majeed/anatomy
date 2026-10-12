@@ -6,6 +6,9 @@ All notable changes to Anatomy are recorded here. The format follows [Keep a Cha
 
 ### Added
 
+- The skill now draws biological structures as labelled teaching models, neuroanatomy first. `SKILL.md` is rewritten around a truth table (`truth.mjs`: parts, layers, borders, pathways, one source URL per row, fetched without API keys) that the build asserts the key against; every named part is its own solid with a numbered pin; the key is generated; a pulse runs the pathways; Q hides the names for revision. `references/neuro.md` holds the sources, the schema, the neuro parts vocabulary with kit recipes, the scope of introductory neuroanatomy and the anatomy check.
+- `examples/hippocampus/`, the hippocampal formation in coronal section: the reference for every biological figure. It draws in both themes, passes `--audit`, and its build fails when the truth table and the drawing disagree.
+- The five evals are now anatomy prompts: the hippocampus, a neuron with its glia, the basal ganglia pathways, a spinal cord with a pasted label list, and a mid-sagittal brain that must be sized down before building.
 - `examples/arcade-cabinet/`, an upright arcade cabinet with its side panel off. A quarter rolls down the coin chute past the coin-switch wire into the cash box, the switch's pulse runs along its cable to the board, and the CRT warms up, self-tests and runs an attract mode drawn in the plane of the tilted monitor; the stick closes a microswitch under the panel. It draws in the light and dark themes and passes `--audit`.
 - `examples/spot-plate/`, a second React figure from the same site as `test-rig`: six pairs of glass drops that run together into one piece of glass as a fan of feeler blades sets `merge`. It draws in the light and dark themes.
 - A first workflow step, **Size it before you start**: every request is sized as a Figure (about 30–90 minutes), a Hero (2–4 hours) or an Epic (6 hours or more), and the estimate is told to the user first. An Epic is not started until the user chooses it over a proposed Hero version. Every size has a working page within the first hour, and Claude reports when a step runs past twice its share of the estimate.
@@ -16,6 +19,7 @@ All notable changes to Anatomy are recorded here. The format follows [Keep a Cha
 
 ### Changed
 
+- `README.md` describes the skill's new purpose and credits the upstream repository.
 - The workflow steps are renumbered 1–10.
 - The 4× detail sweep scales with the size: the subject and mechanism for a Figure, the whole drawing for a Hero or an Epic. The density rule itself still holds for every figure.
 
