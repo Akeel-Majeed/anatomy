@@ -25,12 +25,29 @@ jobs:
         with:
           node-version: 22
 
+      - name: Mesh packer
+        run: node kit/mesh-test.mjs
+
+      - name: Brain
+        run: |
+          node examples/brain/build.mjs
+          node examples/brain/build.mjs --light
+          node examples/brain/check.mjs
+          node scripts/view-check.mjs examples/brain/brain.html
+
+      - name: Hippocampus 3D
+        run: |
+          node examples/hippocampus-3d/build.mjs
+          node examples/hippocampus-3d/build.mjs --light
+          node examples/hippocampus-3d/check.mjs
+          node scripts/view-check.mjs examples/hippocampus-3d/hippocampus-3d.html
+
       - name: Dial indicator
         run: |
           node examples/dial-indicator/build.mjs
           node examples/dial-indicator/build.mjs --light
 
-      - name: Hippocampus
+      - name: Hippocampus section
         run: |
           node examples/hippocampus-section/build.mjs
           node examples/hippocampus-section/build.mjs --light
