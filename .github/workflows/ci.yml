@@ -32,9 +32,9 @@ jobs:
 
       - name: Hippocampus
         run: |
-          node examples/hippocampus/build.mjs
-          node examples/hippocampus/build.mjs --light
-          node examples/hippocampus/check.mjs
+          node examples/hippocampus-section/build.mjs
+          node examples/hippocampus-section/build.mjs --light
+          node examples/hippocampus-section/check.mjs
 
       - name: Desk computer
         run: |

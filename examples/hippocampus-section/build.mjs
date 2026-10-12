@@ -635,7 +635,7 @@ const body = `<div class="iso-stage hp-stage" tabindex="0" role="group" aria-lab
 const card = k.plateHtml({ fig: "Fig 1", title: "Hippocampal formation · coronal", hint: "Hover a pin · arrows step · Q quiz", readout: `${PARTS.length} parts`, body }).replace("</figure>", `${legend}</figure>`);
 
 const page = k.pageHtml({ title: "Hippocampal formation", theme: THEME, body: `<style>${CSS}</style>${card}`, script: kitScript() + LIVE });
-const name = THEME === "light" ? "hippocampus-light.html" : "hippocampus.html";
+const name = THEME === "light" ? "hippocampus-section-light.html" : "hippocampus-section.html";
 writeFileSync(join(HERE, name), page);
 console.log("wrote", name, `${(page.length / 1024).toFixed(0)} KB`, `${R.items.length} items`, `${R.tubes.length} tube runs`, `scale ${KS.toFixed(3)}`);
 
