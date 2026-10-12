@@ -1,4 +1,4 @@
-import { createWriteStream, existsSync, mkdirSync, readFileSync, renameSync, writeFileSync } from "node:fs";
+import { createWriteStream, existsSync, mkdirSync, readFileSync, renameSync, unlinkSync, writeFileSync } from "node:fs";
 import { get as httpGet } from "node:http";
 import { get as httpsGet } from "node:https";
 import { homedir } from "node:os";
@@ -31,13 +31,14 @@ Archives and parts lists are cached under ~/.cache/anatomy/<atlas>/ ($ANATOMY_CA
 const cache = join(process.env.ANATOMY_CACHE || join(homedir(), ".cache", "anatomy"), atlas);
 mkdirSync(cache, { recursive: true });
 
-const response = (url) =>
+const response = (url, range) =>
   new Promise((resolve, reject) => {
-    (url.startsWith("https") ? httpsGet : httpGet)(url, { headers: { "user-agent": "anatomy-atlas" } }, (res) => {
+    const headers = { "user-agent": "anatomy-atlas", ...(range ? { range } : {}) };
+    (url.startsWith("https") ? httpsGet : httpGet)(url, { headers }, (res) => {
       if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
         res.resume();
-        resolve(response(new URL(res.headers.location, url).href));
-      } else if (res.statusCode === 200) resolve(res);
+        resolve(response(new URL(res.headers.location, url).href, range));
+      } else if (res.statusCode === 200 || res.statusCode === 206) resolve(res);
       else {
         res.resume();
         reject(new Error(`HTTP ${res.statusCode} for ${url}`));
@@ -45,20 +46,41 @@ const response = (url) =>
     }).on("error", reject);
   });
 
+const PIECES = 6;
+const BIG = 32 << 20;
+
 async function fetchFile(url) {
   const file = join(cache, basename(url));
   if (existsSync(file)) return file;
-  const res = await response(url);
-  let got = 0;
-  let shown = 0;
-  res.on("data", (chunk) => {
-    got += chunk.length;
-    if (got - shown >= 10 << 20) {
-      shown = got;
-      process.stderr.write(`${basename(file)}: ${got >> 20} MB\n`);
-    }
-  });
-  await pipeline(res, createWriteStream(`${file}.part`));
+  const probe = await response(url, "bytes=0-0");
+  const total = Number((probe.headers["content-range"] || "").split("/")[1]) || 0;
+  probe.resume();
+  if (probe.statusCode === 206 && total > BIG) {
+    const step = Math.ceil(total / PIECES);
+    const pieces = await Promise.all(
+      Array.from({ length: PIECES }, async (_, i) => {
+        const piece = `${file}.piece${i}`;
+        const res = await response(url, `bytes=${i * step}-${Math.min(total, (i + 1) * step) - 1}`);
+        await pipeline(res, createWriteStream(piece));
+        process.stderr.write(`${basename(file)}: piece ${i + 1} of ${PIECES}\n`);
+        return piece;
+      }),
+    );
+    writeFileSync(`${file}.part`, Buffer.concat(pieces.map((piece) => readFileSync(piece))));
+    pieces.forEach((piece) => unlinkSync(piece));
+  } else {
+    const res = await response(url);
+    let got = 0;
+    let shown = 0;
+    res.on("data", (chunk) => {
+      got += chunk.length;
+      if (got - shown >= 10 << 20) {
+        shown = got;
+        process.stderr.write(`${basename(file)}: ${got >> 20} MB\n`);
+      }
+    });
+    await pipeline(res, createWriteStream(`${file}.part`));
+  }
   renameSync(`${file}.part`, file);
   return file;
 }

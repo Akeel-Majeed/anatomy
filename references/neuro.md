@@ -91,9 +91,11 @@ The build applies the atlas's frame so every figure opens in anatomical position
 
 `units` in each packed JSON is `"mm"` or `"um"`, and the two atlases' frames differ, so a card never mixes them: two atlases are two cards, each mounted on its own stage.
 
+A table's `FRAME` may add `open: [azimuth, elevation]` in degrees, the view the figure opens with and R returns to; the default is `[0, 15]`, the front. Choose a view that shows the subject: the human hippocampus is hidden behind the amygdala from the front, so `examples/hippocampus-3d/` opens both cards at `[35, 30]`, from the left, above.
+
 ### Cache
 
-`~/.cache/anatomy/<atlas>/`, or `$ANATOMY_CACHE/<atlas>/` when set. Downloads are atomic (`.part`, then rename) and print a line per 10 MB; the first BodyParts3D fetch pulls one archive, after which every part in it is a local extraction. Delete the directory to refetch.
+`~/.cache/anatomy/<atlas>/`, or `$ANATOMY_CACHE/<atlas>/` when set. Downloads are atomic (`.part`, then rename) and print a line per 10 MB; an archive over 32 MB is fetched as six byte ranges at once, because the BodyParts3D server sends one stream at about a megabyte a minute from outside Japan and six streams in parallel finish in minutes; the first BodyParts3D fetch pulls one archive, after which every part in it is a local extraction. Delete the directory to refetch.
 
 ### Licences
 
