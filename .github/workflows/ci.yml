@@ -42,6 +42,20 @@ jobs:
           node examples/hippocampus-3d/check.mjs
           node scripts/view-check.mjs examples/hippocampus-3d/hippocampus-3d.html
 
+      - name: Limbic system
+        run: |
+          node examples/limbic-system/build.mjs
+          node examples/limbic-system/build.mjs --light
+          node examples/limbic-system/check.mjs
+          node scripts/view-check.mjs examples/limbic-system/limbic-system.html
+
+      - name: Basal ganglia
+        run: |
+          node examples/basal-ganglia/build.mjs
+          node examples/basal-ganglia/build.mjs --light
+          node examples/basal-ganglia/check.mjs
+          node scripts/view-check.mjs examples/basal-ganglia/basal-ganglia.html
+
       - name: Dial indicator
         run: |
           node examples/dial-indicator/build.mjs

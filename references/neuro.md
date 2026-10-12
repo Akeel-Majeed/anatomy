@@ -1,6 +1,6 @@
 # Neuroanatomy: the biology side of the kit
 
-This is the reference for any biological figure. It covers which route a request takes, the two atlases the 3D route fetches from with the ids for the common requests, the frame that puts each atlas in anatomical position, the truth table and the check for a 3D figure, the tissue tone per class, what introductory neuroanatomy covers, and, for the section route, what a teaching model looks like, where its names come from, its truth table, the parts vocabulary with kit recipes, its tones, the anatomy check and the faults that fail a figure. `craft.md` still holds the stand's vocabulary, the tones and the painter's order; `kit.md` the API; `motion.md` the live behaviour.
+This is the reference for any biological figure. It covers which route a request takes, the atlas the 3D route fetches from (human only for now, with the mouse atlas kept for later) and the ids for the common requests, the systems a request can name, the frame that puts each atlas in anatomical position, the truth table and the check for a 3D figure, the tissue tone per class, what introductory neuroanatomy covers, and, for the section route, what a teaching model looks like, where its names come from, its truth table, the parts vocabulary with kit recipes, its tones, the anatomy check and the faults that fail a figure. `craft.md` still holds the stand's vocabulary, the tones and the painter's order; `kit.md` the API; `motion.md` the live behaviour.
 
 ## Contents
 
@@ -16,23 +16,24 @@ This is the reference for any biological figure. It covers which route a request
 
 The atlas is the model: nothing an atlas provides as a mesh is drawn by hand.
 
-- **3D** when an atlas has every requested part as a mesh. BodyParts3D covers the human body (the lobes left and right, the insula, the cerebellum, the brainstem parts, the hippocampus, the amygdala, the fornix, the diencephalon, the gyri, the organs); the Allen Mouse Brain Common Coordinate Framework covers every structure of the mouse brain, the hippocampal subfields included. `node scripts/atlas.mjs bp3d --find <name>` or `allen --find <name>` settles it in a second.
-- **Section route** for a cell type, a circuit with pathways between parts, a cut section with its layers, and any part no atlas has as a mesh: the human hippocampal subfields and the strata of CA1 have no key-free source, so a coronal section of the human hippocampus is drawn, as `examples/hippocampus-section/` does.
+- **3D** when the atlas has every requested part as a mesh. BodyParts3D covers the human body (the lobes left and right, the insula, the cerebellum, the brainstem parts, the hippocampus, the amygdala, the fornix, the diencephalon, the caudate nucleus, putamen and globus pallidus, the gyri, the organs). `node scripts/atlas.mjs bp3d --find <name>` settles it in a second.
+- **A system** asked for as its parts (the limbic system, the basal ganglia, the Papez circuit) is 3D on one card: every member the atlas has, each its own mesh and key row, and the members it lacks named in the caption. Section 6, "Systems", lists the membership and what the atlas has. The pathways between the parts are not drawn in 3D; a circuit with its pathways is the section route.
+- **Section route** for a cell type, a circuit with pathways between parts, a cut section with its layers, and any part the atlas has no mesh for: BodyParts3D has no human hippocampal subfields, so the subfields and the strata of CA1 are drawn as a coronal section, as `examples/hippocampus-section/` does; a nucleus it lacks (the substantia nigra, the subthalamic nucleus, the nucleus accumbens) is named as missing in a system's caption.
 - **A mixed request** (the hippocampus with its layers and the trisynaptic circuit) gets the 3D figure of what the atlas has, with one sentence saying what it lacks. Add a section card only when the user asks for it.
-- **Species.** A request about a human structure is BodyParts3D; a request that names the mouse, or asks for subfields only the mouse atlas has, is Allen, and the caption and the title say it is the mouse. Never put a mouse mesh in a human figure without saying so.
+- **Human only for now.** Every request is BodyParts3D, and the title and the caption say human. The Allen mouse atlas stays in the fetcher (`atlas.mjs allen`) for later ("Later: the mouse atlas", below); a mouse mesh never goes in a human figure, and a mouse figure, when the skill grows one, says the species in its title and caption.
 
 A 3D figure of parts the atlas has takes minutes, so it is never sized as an Epic. The section route's sizes are in `SKILL.md`.
 
 ## 2. Sources
 
-Two open atlases, no keys, fetched once by `scripts/atlas.mjs` and cached. The build never fetches: the packed meshes are committed beside the build with a `LICENCE.md`, so a build and CI run offline.
+One open atlas in use, BodyParts3D, and a second the fetcher supports for later, no keys, fetched once by `scripts/atlas.mjs` and cached. The build never fetches: the packed meshes are committed beside the build with a `LICENCE.md`, so a build and CI run offline.
 
 ### The atlases
 
 | Atlas | What it covers | Access |
 |---|---|---|
 | BodyParts3D 4.0 (Database Center for Life Science, Japan), CC BY-SA 2.1 JP. Home: `https://lifesciencedb.jp/bp3d/` | The human body as named parts keyed by FMA id, in millimetres | Two OBJ archives at `https://dbarchive.biosciencedbc.jp/data/bodyparts3d/LATEST/`: `isa_BP3D_4.0_obj_99.zip` and `partof_BP3D_4.0_obj_99.zip` (about 143 MB each), with the parts lists `isa_parts_list_e.txt` and `partof_parts_list_e.txt` beside them. The OBJ inside is `<FMAid>.obj`. The frontal, temporal and parietal lobes are only in the `partof` archive; `atlas.mjs` downloads only the archive that holds the id. |
-| Allen Mouse Brain Common Coordinate Framework, CCF 2017 (Allen Institute). Home: `https://atlas.brain-map.org/` | Every structure of the mouse brain, in micrometres | One OBJ per structure at `http://download.alleninstitute.org/informatics-archive/current-release/mouse_ccf/annotation/ccf_2017/structure_meshes/<id>.obj`; names, acronyms and ids from `http://api.brain-map.org/api/v2/structure_graph_download/1.json`. |
+| Allen Mouse Brain Common Coordinate Framework, CCF 2017 (Allen Institute). Home: `https://atlas.brain-map.org/` | Every structure of the mouse brain, in micrometres; supported by the fetcher for later, no example uses it | One OBJ per structure at `http://download.alleninstitute.org/informatics-archive/current-release/mouse_ccf/annotation/ccf_2017/structure_meshes/<id>.obj`; names, acronyms and ids from `http://api.brain-map.org/api/v2/structure_graph_download/1.json`. |
 
 `--find` is a case-insensitive substring match on the atlas's own list: `bp3d --find` prints `FMAid	name	isa|partof`, `allen --find` prints `id	acronym	name`. The names below are the atlases' own at the fetch date, 2026-10-12; `atlas.names` in the truth table holds them and the check compares them with the cached list.
 
@@ -58,10 +59,18 @@ Two open atlases, no keys, fetched once by `scripts/atlas.mjs` and cached. The b
 | Thalamus | FMA62007 | thalamus | isa | nucleus |
 | Hypothalamus | FMA62008 | hypothalamus | either | nucleus |
 | Corpus callosum | FMA86464 | corpus callosum | isa | tract |
+| Caudate nucleus | FMA61833 | caudate nucleus | isa | nucleus |
+| Putamen | FMA61834 | putamen | isa | nucleus |
+| Globus pallidus | FMA61835 | globus pallidus | isa | nucleus |
+| Mammillary body | FMA74877 | mammillary body | isa | nucleus |
+| Cingulate gyrus | FMA62434 | cingulate gyrus | isa | cortex |
+| Septum of telencephalon | FMA61842 | septum of telencephalon | isa | nucleus |
 
-A paired part is one row of the truth table with both ids, right first, and `name` is the atlas's name with the side stripped. BodyParts3D has no human hippocampal subfields.
+A paired part is one row of the truth table with both ids, right first, and `name` is the atlas's name with the side stripped. BodyParts3D has no human hippocampal subfields, no substantia nigra, no subthalamic nucleus and no nucleus accumbens: the subfields take the section route, and a missing nucleus is named as missing in a system's caption.
 
-### Mouse parts, Allen CCF
+### Later: the mouse atlas
+
+The skill is human-only for now, and no example uses the mouse atlas. `scripts/atlas.mjs allen` still fetches the Allen Mouse Brain Common Coordinate Framework, CCF 2017, one OBJ per structure in micrometres (`allen --find <name>` prints the id, the acronym and the name), so a mouse figure is a fetch away when the skill grows a species: its own card with its own caption naming the atlas and the species, `atlas.db` set to `"allen"`, and its frame the Allen row of the frames table below. These are the ids of the hippocampal formation, the one common request the human atlas cannot serve as meshes:
 
 | Part | Acronym | Id | Tone |
 |---|---|---|---|
@@ -78,7 +87,7 @@ A paired part is one row of the truth table with both ids, right first, and `nam
 | Prosubiculum | ProS | 484682470 | hippocampus |
 | Whole brain | root | 997 | cortex |
 
-The Allen name is the `name` field verbatim ("Field CA1", "Dentate gyrus"); the user's pasted list may shorten it to "CA1", in which case the atlas's name stays in `atlas.names`.
+The Allen name is the `name` field verbatim ("Field CA1", "Dentate gyrus"); a pasted list may shorten it to "CA1", with the atlas's name kept in `atlas.names`.
 
 ### Frames
 
@@ -87,11 +96,11 @@ The build applies the atlas's frame so every figure opens in anatomical position
 | Atlas | Units | Axes | `frame` |
 |---|---|---|---|
 | BodyParts3D | mm | anatomical axes: z superior, anterior toward −y | `{ up: [0, 0, 1], front: [0, -1, 0] }` |
-| Allen CCF | µm | x anterior to posterior, y superior to inferior, z left to right | `{ up: [0, -1, 0], front: [-1, 0, 0] }` |
+| Allen CCF (for later) | µm | x anterior to posterior, y superior to inferior, z left to right | `{ up: [0, -1, 0], front: [-1, 0, 0] }` |
 
-`units` in each packed JSON is `"mm"` or `"um"`, and the two atlases' frames differ, so a card never mixes them: two atlases are two cards, each mounted on its own stage.
+`units` in each packed JSON is `"mm"` (`"um"` from the Allen atlas), and the two frames differ, so a card never mixes atlases; a second atlas, later, is its own card mounted on its own stage.
 
-A table's `FRAME` may add `open: [azimuth, elevation]` in degrees, the view the figure opens with and R returns to; the default is `[0, 15]`, the front. Choose a view that shows the subject: the human hippocampus is hidden behind the amygdala from the front, so `examples/hippocampus-3d/` opens both cards at `[35, 30]`, from the left, above.
+A table's `FRAME` may add `open: [azimuth, elevation]` in degrees, the view the figure opens with and R returns to; the default is `[0, 15]`, the front. Choose a view that shows the subject: the human hippocampus is hidden behind the amygdala from the front, so `examples/hippocampus-3d/` opens at `[35, 30]`, from the left, above.
 
 ### Cache
 
@@ -100,15 +109,17 @@ A table's `FRAME` may add `open: [azimuth, elevation]` in degrees, the view the 
 ### Licences
 
 - BodyParts3D is CC BY-SA 2.1 JP. The packed meshes under `examples/*/meshes/` are derived from it and carry the same licence, named in the `LICENCE.md` beside them; a page's caption cites `BodyParts3D 4.0, CC BY-SA 2.1 JP, fetched <date>`. A figure built for someone else must keep that attribution.
-- The Allen Mouse Brain CCF meshes are used under the Allen Institute's terms of use with citation; the caption cites `Allen Mouse Brain Common Coordinate Framework, CCF 2017, fetched <date>`, and `LICENCE.md` names the source.
+- The Allen Mouse Brain CCF meshes, when a later figure uses them, are under the Allen Institute's terms of use with citation; the caption cites `Allen Mouse Brain Common Coordinate Framework, CCF 2017, fetched <date>`, and `LICENCE.md` names the source.
 - Neither needs an API key or an account. If an archive URL moves, look for the new `LATEST/` on the atlas home rather than hard-coding a mirror.
 
 ## 3. The truth table for a 3D figure
 
-`truth.mjs` is data only, beside the build script, and exports `SOURCE`, `PARTS` and `PATHS`. This is a fragment of the brain table:
+`truth.mjs` is data only, beside the build script, and exports `SOURCE`, `FRAME`, `PARTS` and `PATHS`. This is a fragment of the brain table:
 
 ```js
 export const SOURCE = { title: "BodyParts3D 4.0", url: "https://lifesciencedb.jp/bp3d/", licence: "CC BY-SA 2.1 JP", fetched: "2026-10-12" };
+
+export const FRAME = { up: [0, 0, 1], front: [0, -1, 0] };
 
 export const PARTS = [
   { n: 1, id: "frontal", name: "Frontal lobe", synonyms: [], atlas: { db: "bp3d", ids: ["FMA72969", "FMA72970"], names: ["right frontal lobe", "left frontal lobe"] }, tone: "frontal", source: "https://lifesciencedb.jp/bp3d/" },
@@ -119,17 +130,18 @@ export const PATHS = [];
 
 - `n` is the tag number and the key order, 1-based, unique. `id` is lower-case with hyphens, unique.
 - `name` is the atlas's English name with the side stripped and the first letter capitalised, unless the user pasted a label list, in which case the user's name is used and the atlas's stays in `atlas.names`.
-- `atlas.db` is `"bp3d"` or `"allen"`; `atlas.ids` lists every mesh the part is made of (right and left are one part); `atlas.names` records what the atlas calls each id at fetch time, in the same order. The check compares them with the atlas's parts list.
+- `FRAME` is the atlas's frame entry from section 2, plus `open: [azimuth, elevation]` when the front view hides the subject.
+- `atlas.db` is `"bp3d"` (`"allen"` for the mouse atlas, later); `atlas.ids` lists every mesh the part is made of (right and left are one part); `atlas.names` records what the atlas calls each id at fetch time, in the same order. The check compares them with the atlas's parts list.
 - `tone` is a class from section 4.
 - `source` is the atlas home, or the structure's own page where the atlas has one.
 - `PATHS` is empty: pathways are not drawn in 3D in this version. A circuit goes on the section route.
-- A page with two cards (`examples/hippocampus-3d/`) exports two tables, `HUMAN` and `MOUSE`, each `{ SOURCE, PARTS }`, and numbers restart at 1 per card.
+- A system (`examples/limbic-system/`, `examples/basal-ganglia/`) is the same table with one row per member the atlas has; the members it lacks go in the caption, never as rows.
 
 The key is generated from `PARTS` and each part's meshes are read by `atlas.ids`, so a part's name is typed in exactly one place.
 
 ## 4. Tissue tones for a 3D figure
 
-The hex is the base colour; the shader lights it (key, fill, rim), lightens it toward white when the part is `lit` and desaturates and darkens it when the part is `dim`. Neighbouring parts differ by class, never by a hand-picked shade, so a figure of one class (the mouse subfields) steps one tone.
+The hex is the base colour; the shader lights it (key, fill, rim), lightens it toward white when the part is `lit` and desaturates and darkens it when the part is `dim`. Neighbouring parts differ by class, never by a hand-picked shade, so a figure of one class (several nuclei on one card) steps one tone.
 
 | class | tone | used for |
 |---|---|---|
@@ -140,10 +152,10 @@ The hex is the base colour; the shader lights it (key, fill, rim), lightens it t
 | insula | `#b08cd9` | insula |
 | cerebellum | `#9b6fc9` | cerebellum |
 | brainstem | `#6f8fd9` | midbrain, pons, medulla |
-| nucleus | `#e0b36b` | amygdala, thalamus, hypothalamus, basal ganglia |
-| hippocampus | `#e08a7a` | hippocampus and its mouse subfields (lighten 8% per subfield step) |
+| nucleus | `#e0b36b` | amygdala, thalamus, hypothalamus, mammillary body, septum, caudate nucleus, putamen, globus pallidus |
+| hippocampus | `#e08a7a` | hippocampus |
 | tract | `#efe9d6` | fornix, alveus, fimbria, corpus callosum |
-| cortex | `#d9a3a3` | any other gyrus or cortical area |
+| cortex | `#d9a3a3` | cingulate gyrus, parahippocampal gyrus, any other gyrus or cortical area |
 
 At most one part is `lit`: the hovered or held one, or the stepped one, which also dims the rest. Nothing is transparent: a dimmed part stays opaque so no depth sorting is needed and the subject's silhouette reads against it. Colour is the subject here, so the section route's one-tone rule does not apply; the card chrome keeps the family's tones.
 
@@ -171,7 +183,18 @@ A checklist of what first courses examine, for picking the parts a request impli
 - Sensory systems: the retina's layers and the visual pathway; the cochlea and the auditory pathway; the somatosensory pathways.
 - Circuits: the trisynaptic circuit; the basal ganglia direct and indirect pathways; the stretch reflex.
 
-Of these, the lobes, the deep structures, the brainstem and the cerebellum are 3D; the layers, the cells, the spinal cord's section and the circuits are the section route.
+Of these, the lobes, the deep structures, the brainstem, the cerebellum and the systems as their parts are 3D; the layers, the cells, the spinal cord's section and the circuits' pathways are the section route.
+
+### Systems
+
+A system is asked for as its parts, and the 3D route puts every member the atlas has on one card, so the reader sees how they sit together. The standard membership, and what BodyParts3D has:
+
+| System | Standard members | In the atlas | Not in the atlas |
+|---|---|---|---|
+| Limbic system | hippocampus, fornix, mammillary body, anterior thalamic nuclei, hypothalamus, amygdala, cingulate gyrus, parahippocampal gyrus, septal nuclei | all of them as whole structures: the thalamus as one mesh, the septum as "septum of telencephalon" (`examples/limbic-system/` shows eight, without the septum) | the anterior thalamic nuclei on their own |
+| Basal ganglia | caudate nucleus, putamen, globus pallidus, subthalamic nucleus, substantia nigra, with the nucleus accumbens as the ventral striatum and the thalamus as the target of the output | caudate nucleus, putamen, globus pallidus, thalamus (`examples/basal-ganglia/`) | substantia nigra, subthalamic nucleus, nucleus accumbens |
+
+The caption of a system's figure names the members the atlas lacks, so the key is never read as the whole system. The Papez circuit as its parts is the limbic card (hippocampus, fornix, mammillary body, thalamus, cingulate gyrus, parahippocampal gyrus); its pathways, and the basal ganglia's direct and indirect pathways, are the section route.
 
 ## 7. Section route
 

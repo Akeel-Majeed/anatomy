@@ -18,6 +18,7 @@
 </p>
 
 <p align="center">
+  <a href="#about-this-fork">About this fork</a> ·
   <a href="#quick-start">Quick start</a> ·
   <a href="#gallery">Gallery</a> ·
   <a href="#what-it-makes">What it makes</a> ·
@@ -37,11 +38,19 @@
 
 ---
 
-Ask Claude to show you a structure, and Anatomy looks it up in an open anatomical atlas, writes a truth table of every named part with the atlas's ids and names, fetches the real meshes (no API key, cached after the first time), and builds them into one HTML file: the structure in a framed card, each part in its own tissue tone with a numbered tag, a key under the card, and the atlas and its licence in the caption. Drag to turn it, hover a part and it lights and names itself, step through the key with the arrows, press Q and the names hide so you can test yourself. It opens offline.
+Ask Claude to show you a structure, or a system such as the limbic system, and Anatomy looks it up in an open anatomical atlas, writes a truth table of every named part with the atlas's ids and names, fetches the real meshes (no API key, cached after the first time), and builds them into one HTML file: the structure in a framed card, each part in its own tissue tone with a numbered tag, a key under the card, and the atlas and its licence in the caption. Drag to turn it, hover a part and it lights and names itself, step through the key with the arrows, press Q and the names hide so you can test yourself. It opens offline.
 
 For what no atlas has as a mesh, a neuron with its glia, a circuit, a cut section with its layers, Anatomy draws an isometric teaching model on a stand instead: a cast with one face cut to the textbook's section, every named part its own solid with a numbered pin, and the pathways as cords that pulse in circuit order.
 
 Then Claude checks its own work: the build fails if the key and the truth table disagree or a name differs from the atlas's own list, a headless browser proves every part is visible and every tag sits on its own part from six views, and the front, left and top are captured and read against the atlas. On the section route, the cut face is read at 4× beside the source's figure and the geometry audit proves nothing passes through anything.
+
+## About this fork
+
+Anatomy is a fork of [wheresryan22/anatomy](https://github.com/wheresryan22/anatomy), a skill that explains technical ideas by drawing them as invented isometric machines. A neuroscience student forked it to revise anatomy with, and turned it toward one job: accurate, labelled models of real structures. Accuracy comes first. Every part is named and numbered from a cited atlas, the build fails when a name drifts from the atlas's own list, a quiz mode hides the names so you can test yourself, and nothing needs an API key.
+
+What changed from upstream: the main output is a rotatable 3D model built from the meshes of open anatomical atlases rather than an invented isometric machine; a truth table and build-time checks for every name; a fetcher and packer for atlas meshes; a plain-WebGL viewer in one offline HTML file; and human neuroanatomy first, systems included, so the limbic system or the basal ganglia can be seen with their parts in place. The isometric kit stays for the cells, circuits and layered sections no atlas has as a mesh.
+
+What is unchanged: the kit, its examples and its craft rules are the upstream author's work, credited under [Credit](#credit), and the licence is still [MIT](#license).
 
 ## Quick start
 
@@ -86,7 +95,7 @@ Four kinds of figure. All four share one card, one key, one truth table and one 
 
 | Kind | What it is | Example |
 |---|---|---|
-| **3D model** | The main output. The real meshes of each named part from an open atlas (BodyParts3D for the human body, the Allen Mouse Brain Common Coordinate Framework for the mouse), packed into one offline HTML file and drawn with plain WebGL: orbit by dragging, zoom, hover to name, arrows to step, Q for quiz, numbered tags that never float over the wrong part, and the atlas cited in the caption. | `brain`, `hippocampus-3d` |
+| **3D model** | The main output. The real meshes of each named part from an open atlas (BodyParts3D; the skill is human-only for now), packed into one offline HTML file and drawn with plain WebGL: orbit by dragging, zoom, hover to name, arrows to step, Q for quiz, numbered tags that never float over the wrong part, and the atlas cited in the caption. A whole brain by lobe, a region with its neighbours, or a system such as the limbic system or the basal ganglia on one card, so you see how its parts sit together, with the members the atlas lacks named in the caption. | `brain`, `hippocampus-3d`, `limbic-system`, `basal-ganglia` |
 | **SVG** | The section route. Solid isometric parts with four-tone shading, painted back to front, in a card with a live readout and eased motion. It ships as a standalone HTML page, a lone `.svg` file with its styles embedded, or React/Next.js components. | `hippocampus-section`, `dial-indicator`, `desk-computer`, `arcade-cabinet`, `test-rig` |
 | **SVG + WebGL** | For what lines can't draw: fire, exhaust, water, caustics, lamp light, glow, steam. The shader runs in a canvas between a back and a front SVG, in the figure's own isometric camera, so it sits inside the drawing. The SVG still reads without WebGL. | `raptor-engine`, `ripple-tank` |
 | **Turning parts** <sup>beta</sup> | Kit-drawn parts that turn in true 3D inside a section figure: a dial or turntable that spins, fingers that flex, a piece that breaks off and falls. The moving parts are re-projected and re-shaded by the kit's own rules every frame; the rest of the figure stays static art. | `turning-dial` |
@@ -162,11 +171,11 @@ You don't have to name the skill. Claude also loads it when you ask to see, lear
 ```
 
 ```text
-/anatomy the brainstem as midbrain, pons and medulla, with the cerebellum behind it, for revision. One file I can open offline.
+/anatomy show me the limbic system in 3D so I can see how the parts fit together. Light theme, one HTML file.
 ```
 
 ```text
-/anatomy show me the thalamus and hypothalamus and where they sit under the cortex. Light theme.
+/anatomy the basal ganglia, how they fit together around the thalamus, for my exam. Dark theme, one file I can open offline.
 ```
 
 ```text
@@ -177,7 +186,7 @@ You don't have to name the skill. Claude also loads it when you ask to see, lear
 
 Three habits get the best figures:
 
-1. **Name the structure, and the species if it isn't human.** Anatomy finds the parts in the atlas and writes the truth table; that is most of the work. For a section, say which cut (coronal, sagittal, transverse).
+1. **Name the structure, or the system.** Anatomy finds the parts in the atlas and writes the truth table; that is most of the work. It is human-only for now. For a section, say which cut (coronal, sagittal, transverse).
 2. **Paste your label list.** If your course names things a certain way, paste the labels from your lecture or textbook figure. They are used verbatim, in your order, and the atlas's own names stay in the truth table beside them.
 3. **Say where it will live.** A standalone HTML page, a lone SVG file, or a React/Next.js component; light or dark.
 
@@ -190,7 +199,9 @@ Each framework-free example has a Node build script that writes standalone pages
 | Example | What it shows | Build |
 |---|---|---|
 | [`brain`](examples/brain) | The whole human brain by lobe from BodyParts3D: the frontal, parietal, temporal and occipital lobes, the insula, the cerebellum, the midbrain, the pons and the medulla oblongata, nine numbered parts, left and right as one. Drag to turn, hover to name, arrows to step, Q for quiz. The reference for every 3D figure. | `node examples/brain/build.mjs` |
-| [`hippocampus-3d`](examples/hippocampus-3d) | One page, two cards. The human hippocampus with the amygdala, fornix and parahippocampal gyrus from BodyParts3D, and the mouse hippocampal formation from the Allen atlas: CA1, CA2, CA3, dentate gyrus, subiculum, presubiculum, parasubiculum, postsubiculum and entorhinal area. | `node examples/hippocampus-3d/build.mjs` |
+| [`hippocampus-3d`](examples/hippocampus-3d) | One card: the human hippocampus with the amygdala, fornix and parahippocampal gyrus from BodyParts3D, four numbered parts. It opens from above-left, because the hippocampus hides behind the amygdala from the front. | `node examples/hippocampus-3d/build.mjs` |
+| [`limbic-system`](examples/limbic-system) | The limbic system on one card, human, from BodyParts3D: hippocampus, fornix, mammillary body, thalamus, hypothalamus, amygdala, cingulate gyrus and parahippocampal gyrus, eight numbered parts, so you see how they sit together. | `node examples/limbic-system/build.mjs` |
+| [`basal-ganglia`](examples/basal-ganglia) | The basal ganglia on one card, human, from BodyParts3D: caudate nucleus, putamen, globus pallidus and the thalamus they project to, four numbered parts. The caption says the substantia nigra, the subthalamic nucleus and the nucleus accumbens are not in the atlas. | `node examples/basal-ganglia/build.mjs` |
 | [`hippocampus-section`](examples/hippocampus-section) | The section route: the hippocampal formation in coronal section as an isometric teaching model, regions as prisms, layers as bands on the cut face, a pin on every part, a key generated from `truth.mjs`, the trisynaptic circuit's cords pulsing in order, hover lift and quiz mode. | `node examples/hippocampus-section/build.mjs` |
 | [`dial-indicator`](examples/dial-indicator) | A dial gauge on a stand over a carriage of gauge blocks. The smallest example, about 300 lines. | `node examples/dial-indicator/build.mjs` |
 | [`desk-computer`](examples/desk-computer) | A 1984-style desk computer with a keyboard you can type on. The typed line appears on a CRT drawn in the plane of the case front, and switching it off collapses the picture to a line and a dot. About 85 solids. | `node examples/desk-computer/build.mjs` |
@@ -251,9 +262,11 @@ anatomy/
 │   ├── inline-kit.mjs        the kit as source, to inline into a standalone page
 │   ├── turn-check.mjs        turning checks in the browser (with turn-fidelity.mjs)
 │   └── turn-bench.mjs        turning timing in Node
-├── examples/                 eleven complete figures, built pages committed
+├── examples/                 thirteen complete figures, built pages committed
 │   ├── brain/                the 3D reference: truth.mjs, check.mjs, build.mjs, meshes/ with LICENCE.md
-│   ├── hippocampus-3d/       human hippocampus with neighbours, mouse hippocampal formation
+│   ├── hippocampus-3d/       the human hippocampus with its neighbours, one card
+│   ├── limbic-system/        the limbic system on one card, eight parts
+│   ├── basal-ganglia/        the basal ganglia on one card, four parts
 │   └── hippocampus-section/  the section-route reference: truth.mjs, check.mjs, section.mjs, build.mjs
 ├── evals/evals.json          test prompts and what a good answer contains
 └── .github/                  issue forms, PR template, CI, README images
@@ -263,14 +276,14 @@ anatomy/
 
 ## Sources and licences
 
-The 3D figures are built from two open atlases. Neither needs an API key; `scripts/atlas.mjs` downloads from them on first use and caches under `~/.cache/anatomy/` (`$ANATOMY_CACHE` overrides).
+The 3D figures are built from one open atlas, BodyParts3D; the fetcher also supports a second, the Allen mouse atlas, for later. Neither needs an API key; `scripts/atlas.mjs` downloads from them on first use and caches under `~/.cache/anatomy/` (`$ANATOMY_CACHE` overrides).
 
 | Atlas | Used for | Licence |
 |---|---|---|
-| [BodyParts3D](https://lifesciencedb.jp/bp3d/) 4.0, Database Center for Life Science, Japan | The human body: `examples/brain/` and the human card of `examples/hippocampus-3d/` | [CC BY-SA 2.1 JP](https://creativecommons.org/licenses/by-sa/2.1/jp/) |
-| [Allen Mouse Brain Common Coordinate Framework](https://atlas.brain-map.org/), CCF 2017, Allen Institute | The mouse brain: the mouse card of `examples/hippocampus-3d/` | The Allen Institute's terms of use, with citation |
+| [BodyParts3D](https://lifesciencedb.jp/bp3d/) 4.0, Database Center for Life Science, Japan | The human body: `examples/brain/`, `examples/hippocampus-3d/`, `examples/limbic-system/` and `examples/basal-ganglia/` | [CC BY-SA 2.1 JP](https://creativecommons.org/licenses/by-sa/2.1/jp/) |
+| [Allen Mouse Brain Common Coordinate Framework](https://atlas.brain-map.org/), CCF 2017, Allen Institute | The mouse brain: supported by the fetcher for later; no example uses it yet | The Allen Institute's terms of use, with citation |
 
-The packed meshes committed under `examples/*/meshes/` are derived from these atlases. The BodyParts3D meshes are CC BY-SA 2.1 JP: keep the attribution the caption and each `meshes/LICENCE.md` carry, and share anything you build from them under the same licence. The skill's own code is MIT (below). `references/neuro.md` lists the atlas ids for the common requests.
+The packed meshes committed under `examples/*/meshes/` are derived from BodyParts3D. The BodyParts3D meshes are CC BY-SA 2.1 JP: keep the attribution the caption and each `meshes/LICENCE.md` carry, and share anything you build from them under the same licence. The skill's own code is MIT (below). `references/neuro.md` lists the atlas ids for the common requests.
 
 ## Requirements
 
@@ -284,7 +297,8 @@ The packed meshes committed under `examples/*/meshes/` are derived from these at
 
 ## Limits
 
-- **The atlas decides what can be shown.** A 3D figure can only have parts the atlas has as a mesh: BodyParts3D has no human hippocampal subfields, so those come from the mouse atlas, with the caption saying so, or from a drawn section. Claude says what the atlas lacks before building.
+- **The atlas decides what can be shown.** A 3D figure can only have parts the atlas has as a mesh: BodyParts3D has no human hippocampal subfields, no substantia nigra, no subthalamic nucleus and no nucleus accumbens; those take the section route or are named as missing in the caption. Claude says what the atlas lacks before building.
+- **Human only for now.** The Allen mouse atlas is supported by the fetcher, but no example uses it and the skill does not offer it yet.
 - **Accuracy is as good as the atlas or the cited source.** Every name comes from the atlas's own list, the fetched source or your pasted list, and the build checks the key against it, but an atlas can differ from your course. Check the key against your own notes before an exam.
 - **It shows models, not histology.** Meshes in tissue tones, or a cast with a cut face, pins and a key. Not a stained section, not a photograph, not a chart. Pathways are not drawn in 3D; a circuit goes on the section route.
 - **Section figures are slow on purpose.** A 3D figure of parts the atlas has takes minutes. A section figure takes a long session: the fetch, the truth table, the parts list, the geometry, the audit, and close-ups of every pin and border in both themes.
