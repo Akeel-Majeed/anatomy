@@ -30,10 +30,10 @@
 </p>
 
 <p align="center">
-  <img src=".github/assets/raptor-engine-firing.webp" width="640" alt="An isometric drawing of a Raptor 2 rocket engine hanging in a test stand, firing: a red exhaust plume, drawn by a WebGL shader, pours onto the stand's base plate. The card reads Fig 1, Raptor 2 test stand, Pc 300 bar, 230 tf.">
+  <img src=".github/assets/brain-lobes.webp" width="640" alt="A 3D model of the human brain seen from the front, each lobe in its own tone with a numbered tag: frontal lobe lit on hover, parietal and temporal lobes, insula, cerebellum and brainstem below. The card reads Fig 1, Human brain, lobes, and the readout says 1, Frontal lobe.">
 </p>
 
-<p align="center"><sub><code>examples/raptor-engine</code>, light theme, one of the machine examples that are the kit's technique references. The brain example's screenshot replaces this once it is captured.</sub></p>
+<p align="center"><sub><code>examples/brain</code>, light theme, the whole human brain by lobe from BodyParts3D: drag to turn, hover a part to name it, Q to hide the names.</sub></p>
 
 ---
 
