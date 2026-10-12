@@ -15,10 +15,10 @@ const signed = (poly) => poly.reduce((sum, [x, y], i) => {
 }, 0);
 const ccw = (poly) => (signed(poly) > 0 ? poly : [...poly].reverse());
 const band = (c, a0, a1, rIn, rOut, step) => ccw([...arc(c, rOut, a0, a1, step), ...arc(c, rIn, a1, a0, step)]);
-const bands = (c, a0, a1, split, rIn, rOut) => (split === null ? [band(c, a0, a1, rIn, rOut)] : [band(c, a0, split, rIn, rOut), band(c, split, a1, rIn, rOut)]);
-const arcs = (c, r, a0, a1, split) => (split === null ? [arc(c, r, a0, a1)] : [arc(c, r, a0, split), arc(c, r, split, a1)]);
+const bands = (c, a0, a1, split, rIn, rOut) => [band(c, a0, split, rIn, rOut), band(c, split, a1, rIn, rOut)];
+const arcs = (c, r, a0, a1, split) => [arc(c, r, a0, split), arc(c, r, split, a1)];
 
-export const C = [4, 2];
+const C = [4, 2];
 const RI = 22;
 const RO = 42;
 const RA = 46.5;
@@ -42,7 +42,7 @@ const PRESUB_U = [T2[0], -12];
 const PARASUB_U = [-12, -32];
 const EC_U = [-32, -56];
 
-export const H = [3, 0];
+const H = [3, 0];
 const DG_IN = 8;
 const DG_MID = 12;
 const DG_OUT = 18;
@@ -134,6 +134,7 @@ export const PINS = {
   alveus: polar(C, (RO + RA) / 2, 60),
   fimbria: [-46, 6.05],
 };
+export const STEM_PINS = { fimbria: 7 };
 
 const SULCUS = RI - 1.2;
 const LANE_LOW = TAIL_TOP + 1.6;
