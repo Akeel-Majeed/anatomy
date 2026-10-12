@@ -3,7 +3,7 @@ const ALLEN = "https://atlas.brain-map.org/";
 
 export const HUMAN = {
   SOURCE: { title: "BodyParts3D 4.0", url: BP3D, licence: "CC BY-SA 2.1 JP", fetched: "2026-10-12" },
-  FRAME: { up: [0, 0, 1], front: [0, -1, 0] },
+  FRAME: { up: [0, 0, 1], front: [0, -1, 0], open: [35, 30] },
   PARTS: [
     { n: 1, id: "hippocampus", name: "Hippocampus", synonyms: [], tone: "#e08a7a", atlas: { db: "bp3d", ids: ["FMA62493"], names: ["hippocampus"] }, source: BP3D },
     { n: 2, id: "amygdala", name: "Amygdala", synonyms: ["Amygdaloid body"], tone: "#e0b36b", atlas: { db: "bp3d", ids: ["FMA61841"], names: ["amygdala"] }, source: BP3D },
@@ -16,7 +16,7 @@ export const HUMAN = {
 // Tones: hippocampus #e08a7a and cortex #c9a3b8 mixed 8/16/24% toward white per subfield step.
 export const MOUSE = {
   SOURCE: { title: "Allen Mouse Brain Common Coordinate Framework v3 (CCF 2017)", url: ALLEN, licence: "Allen Institute Terms of Use", fetched: "2026-10-12" },
-  FRAME: { up: [0, -1, 0], front: [-1, 0, 0] },
+  FRAME: { up: [0, -1, 0], front: [-1, 0, 0], open: [35, 30] },
   PARTS: [
     { n: 1, id: "ca1", name: "Field CA1", synonyms: [], tone: "#e08a7a", atlas: { db: "allen", ids: ["382"], names: ["Field CA1"] }, source: ALLEN },
     { n: 2, id: "ca2", name: "Field CA2", synonyms: [], tone: "#e29385", atlas: { db: "allen", ids: ["423"], names: ["Field CA2"] }, source: ALLEN },

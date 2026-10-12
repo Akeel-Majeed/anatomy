@@ -282,7 +282,8 @@ function mountAnatomy(stage, data) {
   const pickDepth = gl.createRenderbuffer();
 
   const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const cam = { az: 0, el: 15, zoom: 1 };
+  const open = data.frame.open ?? [0, 15];
+const cam = { az: open[0], el: open[1], zoom: 1 };
   const S = { hot: null, held: null, step: null, quiz: false, idle: !still };
   let W = 0;
   let H = 0;
@@ -526,7 +527,7 @@ function mountAnatomy(stage, data) {
     else if (key === "Escape") S.hot = S.held = S.step = null;
     else if (key === "q" || key === "Q") return setQuiz(!S.quiz);
     else if (key === "r" || key === "R") {
-      Object.assign(cam, { az: 0, el: 15, zoom: 1 });
+      Object.assign(cam, { az: open[0], el: open[1], zoom: 1 });
       geometry = true;
     } else return;
     event.preventDefault();
